@@ -1,0 +1,42 @@
+---
+title: "CA_Groundwater_Mass_Balance"
+author: "Jeremy Knox"
+date: "11/19/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(pwr)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(extrafont)
+library(ggrepel)
+```
+
+
+```{r}
+#Assumed constants
+inflow_rate = (10.3-12.8)/(2050-2000)
+outflow_rate = (27-18.2)/(2050-2000)
+#Vectors
+year = seq(1,50)
+inflow = 0
+  for (i in year) {inflow[i] = inflow_rate*(year[i])+12.8}
+outflow = 0
+  for (i in year) {outflow[i] = outflow_rate*(year[i])+18.2}
+d_flow = 0
+  for (i in year) {d_flow[i] = inflow[i] - outflow[i]}
+d_mass_190 = 190
+  for (i in 1:49) {d_mass_190[i+1] = d_mass_190[i] + d_flow[i]}
+d_mass_350 = 350
+  for (i in 1:49) {d_mass_350[i+1] = d_mass_350[i] + d_flow[i]}
+d_mass_550 = 550
+  for (i in 1:49) {d_mass_550[i+1] = d_mass_550[i] + d_flow[i]}
+
+#Data Frame
+CA_water = data.frame(year,inflow,outflow,d_flow,d_mass_190,d_mass_350,d_mass_550)
+```
+
